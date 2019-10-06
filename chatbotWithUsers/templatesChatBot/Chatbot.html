@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block body_block %}
+{% load static %}
+
+
+
+<!--
+<form  method="POST">
+{% csrf_token %}
+<label for="URL">URL:</label>
+<input type="text" name="URL" placeholder="Enter URL here">
+<input type="submit" name="" value="Submit">
+</form>   
+-->
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<p id="test1"></p>
+<p id="test2"></p>
+
+<button class="open-button" onclick="openChat()">Chat</button>
+
+<div class="chat-popup" id="myChat">
+  <div id="formid" class="form-container">
+    <h1>Chat</h1>
+   <div id="CHATDIV" onscroll="myFunction()">
+    
+<div class='container'><img src='{% static 'images/bot.jpg' %}' alt='Avatar' style='width:100%;'><p>Hello. I am our Bot, How are you today?</p><span id='FirstTime' class='time-right'></span></div>
+
+</div>
+
+<!--
+<div class="chat-popup" id="myChat">
+ <form class="form-container">
+    <h1>ChatBot</h1>
+   <div id="CHATDIV" onscroll="myFunction()">
+    <div class="container">
+  <img src="{% static 'images/bot.jpg' %}" alt="Avatar" style="width:100%;">
+  <p>Hello. How are you today?</p>
+   <span id ="Time" class="time-left"></span>
+</div>
+</div>
+
+<div class="container darker">
+  <p>Hey! I'm fine. Thanks for asking!</p>
+  <span class="time-left">11:01</span>
+</div>
+
+<div class="container">
+  <img src="{% static 'images/bot.jpg' %}" alt="Avatar" style="width:100%;">
+  <p>Sweet! So, what do you wanna do today?</p>
+   <span id ="Time" class="time-left"></span>
+</div>
+
+<div class="container darker">
+  <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
+  <span id ="Time" class="time-left"></span>
+</div>
+
+-->
+ 
+<input id="answerBox" type="text" name="URL" placeholder="Enter ANSWER here...">
+
+<form  method="POST">
+{% csrf_token %}
+<input id="sec" type="text" name="Chat" placeholder="Enter URL here">
+<input id="sub" type="submit" value="Submit">
+</form>
+
+<button  id="send" class="btn" onclick="addCode()">Send</button>
+    
+<button  class="btn cancel" onclick="closeForm()">Close</button>
+</div>
+</div>
+
+
+<script>
+
+var questions = {{ Question_list|safe }};
+document.getElementById("sec").style.display = "none";
+document.getElementById("sub").style.display = "none";
+
+function addTime()
+{
+var d = new Date();
+return d.getHours()+':'+d.getMinutes();
+}
+var i=-1;
+
+function addCode() { 
+            
+            var answer = document.getElementById("answerBox").value;
+            
+            i=i+1;
+            
+            document.getElementById("answerBox").value = "";
+            
+            openChat()
+            
+            if (answer=="")
+                { alert("Please Enter a answer"); 
+                  return 0;
+                }
+            document.getElementById("sec").value += answer+"\t" ;
+            if (i==questions.length)
+            {
+            
+            document.getElementById("sub").style.display = "block";
+            
+            document.getElementById("CHATDIV").innerHTML +=  
+              "<div class='container darker'><p>"+answer+"</p><span class='time-left'>"+ addTime()+"</span></div>"; 
+            
+            
+                       
+            document.getElementById("CHATDIV").innerHTML +=  
+            "<div class='container'><img src='{% static 'images/bot.jpg' %}' alt='Avatar' style='width:100%;'><p>"+"Your Information is stored,press submit"+"</p><span class='time-right'>"+addTime()+"</span></div>"; 
+            document.getElementById("CHATDIV").scrollBy(0, document.getElementById("CHATDIV").scrollHeight);
+           
+            
+            i=i-1;
+            return 0;
+            }
+            
+            document.getElementById("CHATDIV").innerHTML +=  
+              "<div class='container darker'><p>"+answer+"</p><span class='time-left'>"+ addTime()+"</span></div>"; 
+            
+
+           document.getElementById("CHATDIV").innerHTML +=  
+            "<div class='container'><img src='{% static 'images/bot.jpg' %}' alt='Avatar' style='width:100%;'><p>"+questions[i]+"</p><span class='time-right'>"+addTime()+"</span></div>"; 
+            document.getElementById("CHATDIV").scrollBy(0, document.getElementById("CHATDIV").scrollHeight);
+                   
+            
+             
+           
+           
+          
+          } 
+
+
+</script> 
+
+
+{% endblock %}
+
